@@ -9,15 +9,17 @@ uri = Models
 INCLUDEPATH += include source
 
 # Input
-SOURCES +=              \
-    sqlmodel_plugin.cpp \
+SOURCES +=               \
+    sqlmodel_plugin.cpp  \
     source/sqlcolumn.cpp \
-    source/sqlmodel.cpp
+    source/sqlmodel.cpp  \
+    source/sqlthreadedmodel.cpp
 
 HEADERS +=              \
     sqlmodel_plugin.h   \
     include/sqlcolumn.h \
-    include/sqlmodel.h
+    include/sqlmodel.h  \
+    include/sqlthreadedmodel.h
 
 DISTFILES = qmldir
 
