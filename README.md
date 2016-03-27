@@ -12,11 +12,13 @@ The SqlModel is a subclassed QSqlTableModel, that is created entirely from QML. 
         
         model: SqlModel {
             id: sqlModel;
+            // The id value is arbitrary, call it whatever you want.
+            
             tableName: "Movies";
             // tableName: is the SQL TABLE name.
             
             autoCreate: true;
-            // Will create the sql database if it does not already exist.
+            // Will create the SQL database if it does not already exist.
                                  
             connectionName: "LIBRARY";
             // This is not required as long as multiple connections to the 
