@@ -83,5 +83,9 @@ for SqlModel, which is kept as a member variable internally. The internal SqlMod
 
 This model will not hang the UI thread, unlike SqlModel, which potentially could if the database queries thousands of results. Usage is identical to SqlModel, except the return variables attached to the slots will always return true and are not guaranteed to finish when the function returns. I will attach signals soon.
 
-
+### Building
+These models are designed to be built as QML plugins. Run qmake, make, and make install. The plugins will be installed to the "qml" folder in your Qt installation directory under "qml/Models". Import the models into QML by running
+```qml
+import Models 1.0
+```
 
