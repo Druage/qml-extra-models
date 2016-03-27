@@ -2,7 +2,6 @@
 This repo includes models that are not included in QML directly.
 
 ## SQL
-----
 #### SqlModel
 The SqlModel is a subclassed QSqlTableModel, that is created entirely from QML. This model lives on the UI thread.
 ```qml
