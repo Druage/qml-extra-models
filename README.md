@@ -13,15 +13,35 @@ The SqlModel is a subclassed QSqlTableModel, that is created entirely from QML. 
         model: SqlModel {
             id: sqlModel;
             tableName: "Movies";
+            // tableName: is the SQL TABLE name.
+            
             autoCreate: true;
+            // Will create the sql database if it does not already exist.
+                                 
             connectionName: "LIBRARY";
-            fileLocation: "/home/username/Desktop/db.sqlite";
+            // This is not required as long as multiple connections to the 
+            // same database are not used. Will default to the fileLocation.
+                                       
+            fileLocation: "/home/username/Desktop/db.sqlite"; 
+            // The location of SQL database. If autoCreate is true,
+            // the database will be created here.
             
             SqlColumn { name: "Title"; type: "TEXT"; }
+            // SqlColumn is like a ListElement for a ListModel.
+            // "name" is the SQL column name used to query against the database
+            // and for table creation of autoCreate is true.
+            // The roleName used to access this column from the delegate
+            // is the same as the column's name.
+            
+            // "type" is the SQL Type of the column.
+            // This just a normal string, so any SQL type will work.
+            
             SqlColumn { name: "Poster"; type: "TEXT"; }
             SqlColumn { name: "Description"; type: "TEXT"; }
             SqlColumn { name: "AbsoluteFilePath"; type: "TEXT NOT NULL UNIQUE"; }
             
+            // You "MUST" call finishModelConstruction() from Component.onCompleted
+            // in order for the model to be reset and created.
             Component.onCompleted: { sqlModel.finishModelConstruction(); }
         }
         
@@ -30,6 +50,9 @@ The SqlModel is a subclassed QSqlTableModel, that is created entirely from QML. 
             height: 50;
             
             Text { text: Title; }
+            // "Title" is defined as the name property in the SqlColumn. No
+            // quotes are needed to access the title name, Just declare it the same
+            // if this was a ListModel.
         }
     }
 ```
