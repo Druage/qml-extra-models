@@ -113,4 +113,5 @@ These models are designed to be built as QML plugins. Run qmake, make, and make 
 ```qml
 import Models 1.0
 ```
+**These plugins are designed to be built with a c++11 compiler.
 
