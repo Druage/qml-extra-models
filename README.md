@@ -20,7 +20,9 @@ The SqlModel is a subclassed QSqlTableModel, that is created entirely from QML. 
             autoCreate: true;
             // Will create the SQL database if it does not already exist.
                                  
-            connectionName: "LIBRARY";
+            sqlDatabase {
+                connectionName: "LIBRARY";
+            }
             // This is not required as long as multiple connections to the 
             // same database are not used. Will default to the fileLocation.
                                        
