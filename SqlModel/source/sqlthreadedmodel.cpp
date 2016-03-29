@@ -49,15 +49,6 @@ QString SqlThreadedModel::tableName() const
     return mModel.tableName();
 }
 
-QString SqlThreadedModel::connectionType() const
-{
-    return mModel.connectionType();
-}
-
-QString SqlThreadedModel::connectionName() const {
-    return mModel.connectionName();
-}
-
 QUrl SqlThreadedModel::fileLocation() const
 {
     return mModel.fileLocation();
@@ -66,6 +57,10 @@ QUrl SqlThreadedModel::fileLocation() const
 bool SqlThreadedModel::autoCreate() const
 {
     return mModel.autoCreate();
+}
+
+Database *SqlThreadedModel::sqlDatabase() {
+    return mModel.sqlDatabase();
 }
 
 QQmlListProperty<SqlColumn> SqlThreadedModel::tableColumns()
@@ -133,16 +128,6 @@ void SqlThreadedModel::setCacheModel( const bool cache ) {
 void SqlThreadedModel::setTableName( const QString tableName ) {
     mModel.setTableName( tableName );
     emit tableNameChanged();
-}
-
-void SqlThreadedModel::setConnectionType( const QString type ) {
-    mModel.setConnectionType( type );
-    emit connectionTypeChanged();
-}
-
-void SqlThreadedModel::setConnectionName(const QString name) {
-    mModel.setConnectionName( name );
-    emit connectionNameChanged();
 }
 
 void SqlThreadedModel::setFileLocation( const QUrl location ) {

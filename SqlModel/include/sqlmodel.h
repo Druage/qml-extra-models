@@ -2,6 +2,7 @@
 #define SQLMODEL_H
 
 #include "sqlcolumn.h"
+#include "database.h"
 
 #include <QObject>
 #include <QSqlTableModel>
@@ -14,13 +15,13 @@ const static QString filterStatementKey = QStringLiteral( "filter" );
 class SqlModel : public QSqlTableModel
 {
     Q_OBJECT
-    Q_PROPERTY( bool cacheModel READ cacheModel WRITE setCacheModel NOTIFY cacheModelChanged )
+   // Q_PROPERTY( bool cacheModel READ cacheModel WRITE setCacheModel NOTIFY cacheModelChanged )
     Q_PROPERTY( bool autoCreate READ autoCreate WRITE setAutoCreate NOTIFY autoCreateChanged )
 
     Q_PROPERTY( QString tableName READ tableName WRITE setTableName NOTIFY tableNameChanged )
-    Q_PROPERTY( QString connectionType READ connectionType WRITE setConnectionType NOTIFY connectionTypeChanged )
-    Q_PROPERTY( QString connectionName READ connectionName WRITE setConnectionName NOTIFY connectionNameChanged )
     Q_PROPERTY( QUrl fileLocation READ fileLocation WRITE setFileLocation NOTIFY fileLocationChanged )
+
+    Q_PROPERTY( Database *sqlDatabase READ sqlDatabase )
 
     Q_PROPERTY( QQmlListProperty<SqlColumn> tableColumns READ tableColumns )
 
@@ -38,7 +39,6 @@ public:
     Q_ENUMS( FilterType )
 
     SqlModel( QObject *parent = nullptr );
-    ~SqlModel();
 
     void setRoleName( const int role, const QByteArray &value );
 
@@ -52,16 +52,21 @@ public:
     // [!!] QML Q_PROPERTY ( Getters )
     bool cacheModel() const;
     QString tableName() const;
-    QString connectionType() const;
-    QString connectionName() const;
     QUrl fileLocation() const;
     bool autoCreate() const;
+
+    // !![WARNING]!!
+    // Only mean't to be accessed from QML, this is not a deletable pointer!
+    Database *sqlDatabase() {
+        return &mDatabase;
+    }
+    // ~!![WARNING]!!
+
     // ~[!!]
 
     // [!!] QML Q_PROPERTY ( Setters )
-    void setCacheModel( bool cache );
+    void setCacheModel( const bool cache );
     void setTableName( const QString tableName );
-    void setConnectionType( const QString type );
     void setConnectionName( const QString name );
     void setFileLocation( const QUrl location );
     void setAutoCreate( const bool create );
@@ -79,7 +84,6 @@ Q_SIGNALS:
     // [!!] QML Q_PROPERTY signals
     void cacheModelChanged();
     void tableNameChanged();
-    void connectionTypeChanged();
     void connectionNameChanged();
     void fileLocationChanged();
     void autoCreateChanged();
@@ -103,7 +107,7 @@ public Q_SLOTS:
     bool addRow( const QVariantMap rowData );
 
     //Remove row from sql model.
-    bool deleteRow( int index, const QString column, const QVariant absFilePath );
+    bool deleteRow( int index, const QString column, const QVariant where );
 
     // Updates the row with the new value;
     bool updateRow( int index, const QString column, const QVariant oldData, const QVariant newData );
@@ -113,16 +117,17 @@ public Q_SLOTS:
     void clearDatabase();
 
 private:
-    QString mDbName;
     QString mDbAbsoluteFilePath;
 
     // QML Properties
     bool mCacheModel;
     QString mTableName;
-    QString mConnectionType;
     QString mConnectionName;
     QUrl mFileLocation;
     bool mAutoCreate;
+
+    // No need to delete, is parented to model.
+    Database mDatabase;
 
     QHash<int, QByteArray> mRoleNames;
     QHash<QByteArray, int>  mNameToRoleMap;
@@ -130,6 +135,8 @@ private:
     QVariantHash mFilterMap;
     QList< QMap<int, QVariant> >cachedModel;
 
+
+    static int tableRowIndex;
 
     // [!!] Helpers
     void createTable();

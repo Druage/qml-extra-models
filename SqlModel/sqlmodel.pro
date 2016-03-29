@@ -13,13 +13,15 @@ SOURCES +=               \
     sqlmodel_plugin.cpp  \
     source/sqlcolumn.cpp \
     source/sqlmodel.cpp  \
-    source/sqlthreadedmodel.cpp
+    source/sqlthreadedmodel.cpp \
+    source/database.cpp
 
 HEADERS +=              \
     sqlmodel_plugin.h   \
     include/sqlcolumn.h \
     include/sqlmodel.h  \
-    include/sqlthreadedmodel.h
+    include/sqlthreadedmodel.h \
+    include/database.h
 
 DISTFILES = qmldir
 
@@ -32,9 +34,9 @@ DISTFILES = qmldir
 }
 
 qmldir.files = qmldir
-unix {
-    installPath = $$[QT_INSTALL_QML]/$$replace(uri, \\., /)
-    qmldir.path = $$installPath
-    target.path = $$installPath
-    INSTALLS += target qmldir
-}
+installPath = $$[QT_INSTALL_QML]/$$replace(uri, \\., /)
+qmldir.path = $$installPath
+target.path = $$installPath
+INSTALLS += target qmldir
+
+message($$[QT_INSTALL_QML]/$$replace(uri, \\., /))
