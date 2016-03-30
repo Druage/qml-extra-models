@@ -29,7 +29,7 @@ class SqlThreadedModel : public QAbstractTableModel
     Q_PROPERTY( QString tableName READ tableName WRITE setTableName NOTIFY tableNameChanged )
     Q_PROPERTY( QUrl fileLocation READ fileLocation WRITE setFileLocation NOTIFY fileLocationChanged )
 
-    Q_PROPERTY( Database *sqlDatabase READ sqlDatabase )
+    Q_PROPERTY( DatabaseSettings *databaseSettings READ databaseSettings )
     Q_PROPERTY( QQmlListProperty<SqlColumn> tableColumns READ tableColumns )
 
     // This enables SqlModel to use SqlColumns declared as children and
@@ -51,7 +51,7 @@ public:
     QString tableName() const;
     QUrl fileLocation() const;
     bool autoCreate() const;
-    Database *sqlDatabase();
+    DatabaseSettings *databaseSettings();
 
     // ~[!!]
 

@@ -38,23 +38,23 @@ void SqlModel::openDatabase( const QString &connection, const QString &dbName, c
     } else {
         db = QSqlDatabase::addDatabase( connection, dbName );
         db.setDatabaseName( dbAbsoluteFile );
-        if ( !mDatabase.userName().isEmpty() ) {
-            db.setUserName( mDatabase.userName() );
+        if ( !mDatabaseSettings.userName().isEmpty() ) {
+            db.setUserName( mDatabaseSettings.userName() );
         }
-        if ( !mDatabase.password().isEmpty() ) {
-            db.setPassword( mDatabase.password() );
+        if ( !mDatabaseSettings.password().isEmpty() ) {
+            db.setPassword( mDatabaseSettings.password() );
         }
-        if ( !mDatabase.connectionOptions().isEmpty() ) {
-            db.setConnectOptions( mDatabase.connectionOptions() );
+        if ( !mDatabaseSettings.connectionOptions().isEmpty() ) {
+            db.setConnectOptions( mDatabaseSettings.connectionOptions() );
         }
-        if ( mDatabase.port() != INT_MIN ) {
-            db.setPort(  mDatabase.port() );
+        if ( mDatabaseSettings.port() != INT_MIN ) {
+            db.setPort(  mDatabaseSettings.port() );
         }
-        if ( !mDatabase.hostName().isEmpty() ) {
-            db.setHostName( mDatabase.hostName() );
+        if ( !mDatabaseSettings.hostName().isEmpty() ) {
+            db.setHostName( mDatabaseSettings.hostName() );
         }
-        if ( mDatabase.numericalPrecisionPolicy() != Database::NumericalPrecisionPolicy::Default ) {
-            db.setNumericalPrecisionPolicy( static_cast<QSql::NumericalPrecisionPolicy>( mDatabase.numericalPrecisionPolicy() ) );
+        if ( mDatabaseSettings.numericalPrecisionPolicy() != DatabaseSettings::NumericalPrecisionPolicy::Default ) {
+            db.setNumericalPrecisionPolicy( static_cast<QSql::NumericalPrecisionPolicy>( mDatabaseSettings.numericalPrecisionPolicy() ) );
         }
     }
 
@@ -87,7 +87,7 @@ bool SqlModel::addRow( const QVariantMap rowData ) {
 
     QMap<int, QVariant> newCacheMap;
 
-    QSqlDatabase db = QSqlDatabase::database( mDatabase.connectionName() );
+    QSqlDatabase db = QSqlDatabase::database( mDatabaseSettings.connectionName() );
     bool t = db.transaction();
     Q_ASSERT( t );
 
@@ -135,7 +135,7 @@ bool SqlModel::deleteRow( int index, const QString column, const QVariant where 
 
     cachedModel.removeAt( index );
 
-    QSqlDatabase db = QSqlDatabase::database( mDatabase.connectionName() ) ;
+    QSqlDatabase db = QSqlDatabase::database( mDatabaseSettings.connectionName() ) ;
     bool t = db.transaction();
     Q_ASSERT( t );
     QSqlQuery query( db );
@@ -164,7 +164,7 @@ bool SqlModel::deleteRow( int index, const QString column, const QVariant where 
 
 bool SqlModel::updateRow( int index, const QString column, const QVariant oldData, const QVariant newData ) {
 
-    QSqlDatabase db = QSqlDatabase::database( mDatabase.connectionName() );
+    QSqlDatabase db = QSqlDatabase::database( mDatabaseSettings.connectionName() );
     bool t = db.transaction();
     Q_ASSERT( t );
 
@@ -223,8 +223,8 @@ void SqlModel::clearDatabase() {
 
     beginRemoveRows( QModelIndex(), 0, rowCount() );
 
-    if ( QSqlDatabase::contains( mDatabase.connectionName() ) ) {
-        QSqlDatabase db = QSqlDatabase::database( mDatabase.connectionName() );
+    if ( QSqlDatabase::contains( mDatabaseSettings.connectionName() ) ) {
+        QSqlDatabase db = QSqlDatabase::database( mDatabaseSettings.connectionName() );
         db.close();
     }
 
@@ -233,7 +233,7 @@ void SqlModel::clearDatabase() {
     cachedModel.clear();
 
     if ( file.remove() ) {
-        openDatabase( mDatabase.driverType(), mDatabase.connectionName(), mDbAbsoluteFilePath );
+        openDatabase( mDatabaseSettings.driverType(), mDatabaseSettings.connectionName(), mDbAbsoluteFilePath );
         createTable();
     }
 
@@ -258,7 +258,7 @@ bool SqlModel::select() {
 
     //    d->clearCache();
 
-    QSqlQuery query( QSqlDatabase::database( mDatabase.connectionName() ) );
+    QSqlQuery query( QSqlDatabase::database( mDatabaseSettings.connectionName() ) );
 
     query.prepare( s );
 
@@ -423,14 +423,14 @@ void SqlModel::finishModelConstruction() {
         dbFile = dbFile.remove( QStringLiteral( "file:" ) );
     }
 
-    if ( mDatabase.connectionName().isEmpty() ) {
-        mDatabase.setConnectionName( dbFile );
+    if ( mDatabaseSettings.connectionName().isEmpty() ) {
+        mDatabaseSettings.setConnectionName( dbFile );
         qWarning() << "connectionName wasn't set! Multiple connections to"
                    << dbFile << "may share connection names. Prefer to set it!";
     }
 
-    openDatabase( mDatabase.driverType()
-                  , mDatabase.connectionName()
+    openDatabase( mDatabaseSettings.driverType()
+                  , mDatabaseSettings.connectionName()
                   , dbFile );
     createTable();
 
@@ -450,7 +450,7 @@ void SqlModel::finishModelConstruction() {
     beginResetModel();
 
     if ( cacheModel() ) {
-        QSqlQuery query( QSqlDatabase::database( mDatabase.connectionName() ) );
+        QSqlQuery query( QSqlDatabase::database( mDatabaseSettings.connectionName() ) );
 
         qDebug() << statement;
 
@@ -485,7 +485,7 @@ void SqlModel::finishModelConstruction() {
 
 void SqlModel::createTable() {
 
-    QSqlQuery query( QSqlDatabase::database( mDatabase.connectionName() ) );
+    QSqlQuery query( QSqlDatabase::database( mDatabaseSettings.connectionName() ) );
     QString statement = QStringLiteral( "CREATE TABLE IF NOT EXISTS " )
                         % tableName()
                         % QStringLiteral( "(" );

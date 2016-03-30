@@ -2,7 +2,7 @@
 #define SQLMODEL_H
 
 #include "sqlcolumn.h"
-#include "database.h"
+#include "databasesettings.h"
 
 #include <QObject>
 #include <QSqlTableModel>
@@ -21,7 +21,7 @@ class SqlModel : public QSqlTableModel
     Q_PROPERTY( QString tableName READ tableName WRITE setTableName NOTIFY tableNameChanged )
     Q_PROPERTY( QUrl fileLocation READ fileLocation WRITE setFileLocation NOTIFY fileLocationChanged )
 
-    Q_PROPERTY( Database *sqlDatabase READ sqlDatabase )
+    Q_PROPERTY( DatabaseSettings *databaseSettings READ databaseSettings )
 
     Q_PROPERTY( QQmlListProperty<SqlColumn> tableColumns READ tableColumns )
 
@@ -57,8 +57,8 @@ public:
 
     // !![WARNING]!!
     // Only mean't to be accessed from QML, this is not a deletable pointer!
-    Database *sqlDatabase() {
-        return &mDatabase;
+    DatabaseSettings *databaseSettings() {
+        return &mDatabaseSettings;
     }
     // ~!![WARNING]!!
 
@@ -127,7 +127,7 @@ private:
     bool mAutoCreate;
 
     // No need to delete, is parented to model.
-    Database mDatabase;
+    DatabaseSettings mDatabaseSettings;
 
     QHash<int, QByteArray> mRoleNames;
     QHash<QByteArray, int>  mNameToRoleMap;

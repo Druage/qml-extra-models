@@ -59,8 +59,8 @@ bool SqlThreadedModel::autoCreate() const
     return mModel.autoCreate();
 }
 
-Database *SqlThreadedModel::sqlDatabase() {
-    return mModel.sqlDatabase();
+DatabaseSettings *SqlThreadedModel::databaseSettings() {
+    return mModel.databaseSettings();
 }
 
 QQmlListProperty<SqlColumn> SqlThreadedModel::tableColumns()

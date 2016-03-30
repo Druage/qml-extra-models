@@ -1,16 +1,16 @@
-#ifndef DATABASE_H
-#define DATABASE_H
+#ifndef DATABASESETTINGS_H
+#define DATABASESETTINGS_H
 
 #include <QObject>
 #include <QSql>
 #include <QDebug>
 
-// Database is a wrapper for setting the QSqlDatabase setters from QML.
-// This is exposed in the SqlModel under the Q_PROPERTY called "sqlDatabase" and is a read only object.
+// DatabaseSettings is a wrapper for setting the QSqlDatabase setters from QML.
+// This is exposed in the SqlModel under the Q_PROPERTY called "databaseSettings" and is a read only object.
 // The getters are use to fill in the QSqlDatabase information during "SqlModel::finishModelConstruction".
 // All property names are taken almost exactly from QSqlDatabase.
 
-class Database : public QObject {
+class DatabaseSettings : public QObject {
     Q_OBJECT
     Q_PROPERTY( QString password READ password WRITE setPassword )
     Q_PROPERTY( QString userName READ userName WRITE setUserName )
@@ -20,7 +20,7 @@ class Database : public QObject {
     Q_PROPERTY( QString hostName READ hostName WRITE setHostName )
     Q_PROPERTY( QString connectionName READ connectionName WRITE setConnectionName )
 
-    // !![CAUTION]!! Database::port() is defaulted to INT_MIN, so you cannot use that as a port value.
+    // !![CAUTION]!! DatabaseSettings::port() is defaulted to INT_MIN, so you cannot use that as a port value.
     Q_PROPERTY( int port READ port WRITE setPort )
     // ~!![CAUTION]!!
     Q_PROPERTY( NumericalPrecisionPolicy numericalPrecisionPolicy READ numericalPrecisionPolicy WRITE setNumericalPrecisionPolicy )
@@ -34,9 +34,9 @@ public:
         LowPrecisionDouble = QSql::LowPrecisionDouble,
         HighPrecision = QSql::HighPrecision,
     };
-    Q_ENUMS( PrecisionPolicy )
+    Q_ENUMS( NumericalPrecisionPolicy )
 
-    Database( QObject *parent = nullptr );
+    DatabaseSettings( QObject *parent = nullptr );
     
     // [!!] QML Q_PROPERTY ( Getters )
     QString password() const;
@@ -78,6 +78,6 @@ private:
 
 };
 
-QDebug operator <<( QDebug d, const Database &db );
+QDebug operator <<( QDebug d, const DatabaseSettings &db );
 
-#endif // DATABASE_H
+#endif // DATABASESETTINGS_H

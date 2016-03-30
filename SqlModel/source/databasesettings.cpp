@@ -1,9 +1,9 @@
-#include "database.h"
+#include "databasesettings.h"
 
 #include <QSqlDatabase>
 #include <QDebugStateSaver>
 
-Database::Database(QObject *parent)
+DatabaseSettings::DatabaseSettings(QObject *parent)
     : QObject( parent ),
       mDriverType( QStringLiteral( "QSQLITE" ) ),
       mPort( INT_MIN ),
@@ -12,95 +12,95 @@ Database::Database(QObject *parent)
 
 }
 
-QString Database::password() const
+QString DatabaseSettings::password() const
 {
     return mPassword;
 }
 
-QString Database::userName() const
+QString DatabaseSettings::userName() const
 {
     return mUserName;
 }
 
-QString Database::connectionOptions() const
+QString DatabaseSettings::connectionOptions() const
 {
     return mConnectionOptions;
 }
 
-QString Database::databaseName() const
+QString DatabaseSettings::databaseName() const
 {
     return mDatabaseName;
 }
 
-QString Database::driverType() const
+QString DatabaseSettings::driverType() const
 {
     return mDriverType;
 }
 
-QString Database::hostName() const
+QString DatabaseSettings::hostName() const
 {
     return mHostName;
 }
 
-QString Database::connectionName() const
+QString DatabaseSettings::connectionName() const
 {
     return mConnectionName;
 }
 
-int Database::port() const
+int DatabaseSettings::port() const
 {
     return mPort;
 }
 
-Database::NumericalPrecisionPolicy Database::numericalPrecisionPolicy() const
+DatabaseSettings::NumericalPrecisionPolicy DatabaseSettings::numericalPrecisionPolicy() const
 {
     return mNumericalPrecisionPolicy;
 }
 
-void Database::setPassword(const QString password) {
+void DatabaseSettings::setPassword(const QString password) {
     mPassword = password;
 }
 
-void Database::setUserName(const QString userName) {
+void DatabaseSettings::setUserName(const QString userName) {
     mUserName = userName;
 }
 
-void Database::setConnectionOptions(const QString options) {
+void DatabaseSettings::setConnectionOptions(const QString options) {
     mConnectionOptions = options;
 }
 
-void Database::setDatabaseName(const QString name) {
+void DatabaseSettings::setDatabaseName(const QString name) {
     mDatabaseName = name;
 }
 
-void Database::setDriverType(const QString type) {
+void DatabaseSettings::setDriverType(const QString type) {
     mDriverType = type;
 }
 
-void Database::setHostName(const QString name) {
+void DatabaseSettings::setHostName(const QString name) {
     mHostName = name;
 }
 
-void Database::setConnectionName(const QString name) {
+void DatabaseSettings::setConnectionName(const QString name) {
     mConnectionName = name;
 }
 
-void Database::setPort(const int port) {
+void DatabaseSettings::setPort(const int port) {
     mPort = port;
 }
 
-void Database::setNumericalPrecisionPolicy(const Database::NumericalPrecisionPolicy policy) {
+void DatabaseSettings::setNumericalPrecisionPolicy(const DatabaseSettings::NumericalPrecisionPolicy policy) {
     mNumericalPrecisionPolicy = policy;
 }
 
-bool Database::isDriverAvailable(const QString name) {
+bool DatabaseSettings::isDriverAvailable(const QString name) {
     return QSqlDatabase::isDriverAvailable( name );
 }
 
-QDebug operator <<(QDebug d, const Database &db) {
+QDebug operator <<(QDebug d, const DatabaseSettings &db) {
     QDebugStateSaver saver( d );
     Q_UNUSED( saver );
-    d << "Database(";
+    d << "DatabaseSettings(";
     d << "\n  userName: " << db.userName()
       << "\n  password: " << db.password()
       << "\n  databaseName: " << db.databaseName()

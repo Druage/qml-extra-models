@@ -14,14 +14,14 @@ SOURCES +=               \
     source/sqlcolumn.cpp \
     source/sqlmodel.cpp  \
     source/sqlthreadedmodel.cpp \
-    source/database.cpp
+    source/databasesettings.cpp
 
 HEADERS +=              \
     sqlmodel_plugin.h   \
     include/sqlcolumn.h \
     include/sqlmodel.h  \
     include/sqlthreadedmodel.h \
-    include/database.h
+    include/databasesettings.h
 
 DISTFILES = qmldir
 
