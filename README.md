@@ -20,7 +20,7 @@ The SqlModel is a subclassed QSqlTableModel, that is created entirely from QML. 
             autoCreate: true;
             // Will create the SQL database if it does not already exist.
                                  
-            sqlDatabase {
+            databaseSettings {
                 connectionName: "LIBRARY";
             }
             // This is not required as long as multiple connections to the 
@@ -83,7 +83,7 @@ The SqlModel is a subclassed QSqlTableModel, that is created entirely from QML. 
     bool addRow( const QVariantMap rowData );
 
     //Remove row from sql model.
-    bool deleteRow( int index, const QString column, const QVariant absFilePath );
+    bool deleteRow( int index, const QString column, const QVariant data );
 
     // Updates the row with the new value;
     bool updateRow( int index, const QString column, const QVariant oldData, const QVariant newData );
